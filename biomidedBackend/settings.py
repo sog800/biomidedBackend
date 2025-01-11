@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',  # Token support (optional for traditional token auth)
     'accounts',
      'BlogPost',
-    'rest_framework_simplejwt.token_blacklist',  
+    'rest_framework_simplejwt.token_blacklist', 
+    'corsheaders', 
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -77,6 +78,8 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -117,8 +120,17 @@ DATABASES = {
     }
 }
 
+CORS_ALLOWED_ORIGINS = [
+    'https://biomideds.netlify.app',
+]
 
+CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    # Add any custom headers your frontend sends
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -164,3 +176,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
