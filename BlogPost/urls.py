@@ -1,11 +1,8 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import BlogPostViewSet
+from django.urls import path
+from . import views
 
-# Create a router and register the BlogPostViewSet
-router = DefaultRouter()
-router.register(r'blogposts', BlogPostViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),  # Include all the automatically generated routes for blogposts
+    path('blog/<int:pk>/', views.get_one_blog, name='get_one_blog'),
+    path('all-blogs/', views.get_all_posts, name='all_blogs')
 ]
