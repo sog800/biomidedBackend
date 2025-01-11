@@ -28,9 +28,9 @@ SECRET_KEY = 'django-insecure-zk@w+(6gte&-bfg5qn(v2$)wshuiqki=z@hlf7u4-k6ibib==#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['biomidedBackend.onrender.com']
+ALLOWED_HOSTS = ['biomidedBackend.onrender.com', 'localhost', '127.0.0.1']
 
-ALLOWED_HOSTS = []
+
 
 # Media settings for handling file uploads
 # Serve media files during development
