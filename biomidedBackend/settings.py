@@ -6,11 +6,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
-# SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
-SECRET_KEY='django-insecure-zk@w+(6gte&-bfg5qn(v2$)wshuiqki=z@hlf7u4-k6ibib==#'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 
-DEBUG = True  # Set to False in production
-ALLOWED_HOSTS = ["biomidedBackend.onrender.com", 'localhost']  # Add your allowed hosts here
+
+DEBUG = False  # Set to False in production
+ALLOWED_HOSTS = ["biomidedBackend.onrender.com", '127.0.0.1', 'localhost']  # Add your allowed hosts here
 
 # Applications
 INSTALLED_APPS = [
@@ -43,10 +43,29 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'https://biomideds.netlify.app'
+    'https://biomideds.netlify.app',
+    'http://localhost:5173'
 ]
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",   # Allow PUT method
+    "DELETE",
+    "OPTIONS",
+]
+
 # URL configuration
 ROOT_URLCONF = 'biomidedBackend.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 
 # Templates
 TEMPLATES = [

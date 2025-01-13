@@ -12,6 +12,8 @@ class BlogPost(models.Model):
     blog_video = models.FileField(upload_to='blog_videos/', null=True, blank=True)
     blog_likes = models.PositiveIntegerField(default=0)
     posted_at = models.DateTimeField(default=timezone.now)
+    author_image = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    author_bio = models.TextField(default='')
 
     def __str__(self):
         return self.title
