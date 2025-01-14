@@ -13,7 +13,7 @@ DEBUG = False  # Set to False in production
 ALLOWED_HOSTS = ["biomidedBackend.onrender.com", '127.0.0.1', 'localhost']  # Add your allowed hosts here
 
 # Applications
-INSTALLED_APPS = [
+INSTALLED_APPS = [ 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'BlogPost',
     'account',
     'rest_framework.authtoken',
-    'corsheaders'
+    'corsheaders',
 ]
 
 # Middleware
