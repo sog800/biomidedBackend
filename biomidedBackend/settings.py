@@ -1,13 +1,17 @@
 
 import os
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
+# Optional: If you plan to serve images directly via Django, you can add this:
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
-
 
 DEBUG = False  # Set to False in production
 ALLOWED_HOSTS = ["biomidedBackend.onrender.com", '127.0.0.1', 'localhost']  # Add your allowed hosts here
@@ -25,7 +29,21 @@ INSTALLED_APPS = [
     'account',
     'rest_framework.authtoken',
     'corsheaders',
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+    secure=True
+)
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Middleware
 MIDDLEWARE = [
@@ -33,7 +51,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -71,7 +88,7 @@ REST_FRAMEWORK = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Check this path
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,6 +100,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 # WSGI
 WSGI_APPLICATION = 'biomidedBackend.wsgi.application'

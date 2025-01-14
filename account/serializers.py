@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from . import models
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
@@ -22,3 +24,21 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+
+from cloudinary.uploader import upload
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    profile_picture = serializers.ImageField(required=False)
+
+    class Meta:
+        model = models.UserInfo
+        fields = ['bio', 'website', 'location', 'profile_picture']
+
+    def update(self, instance, validated_data):
+        if 'profile_picture' in validated_data:
+            # Upload the image to Cloudinary
+            image = validated_data.pop('profile_picture')
+            upload_result = upload(image)
+            instance.profile_picture = upload_result['url']
+        return super().update(instance, validated_data)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import BlogPost, BlogComment
+from .models import BlogPost, BlogComment, UserFeedBack
 
 
 
@@ -11,4 +11,7 @@ class BlogPostAdmin(admin.ModelAdmin):
 admin.site.register(BlogPost, BlogPostAdmin)
 
 admin.site.register(BlogComment)
+
+
+admin.site.register(UserFeedBack)
 

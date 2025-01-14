@@ -10,3 +10,11 @@ class BlogPostSerializer(serializers.ModelSerializer):
         model = BlogPost
         fields = ['id', 'author_name', 'title', 'description', 'content','blog_image', 'blog_video', 'author_image', 
                   'blog_likes', 'posted_at', 'comments', 'author_bio']  # Include comments in the response
+
+from rest_framework import serializers
+from .models import UserFeedBack
+
+class UserFeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFeedBack
+        fields = ['feedback', 'created_at']

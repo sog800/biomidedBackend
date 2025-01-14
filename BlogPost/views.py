@@ -156,3 +156,23 @@ def add_comment(request, post_id):
         }
     }, status=201)
 
+
+# user feedback
+
+from .models import UserFeedBack
+from .serializers import UserFeedbackSerializer
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def userFeedback(request):
+    if request.method == 'POST':
+        # Ensure the request is from a logged-in user
+        user = request.user  # Get the logged-in user
+        data = request.data
+        data['user'] = user.id  # Add the logged-in user's ID to the data
+        
+        serializer = UserFeedbackSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Feedback submitted successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

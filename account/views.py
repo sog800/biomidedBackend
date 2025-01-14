@@ -5,18 +5,30 @@ from .serializers import RegisterSerializer
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import NotFound
+
 
 
 class RegisterView(APIView):
     permission_classes = []  # No permissions required
+
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
-        print(serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Collect error messages
+        error_messages = []
+        for field, errors in serializer.errors.items():
+            for error in errors:
+                error_messages.append(f"{field}: {error}")
+
+        # Send detailed error messages to the frontend
+        return Response(
+            {"message": "Registration failed", "errors": error_messages},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
 
 
 # Login View
@@ -51,3 +63,25 @@ class LogoutView(APIView):
                 return Response({"error": "No active session found."}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": "Failed to log out"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+
+from .models import UserInfo
+from .serializers import UserInfoSerializer
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        profile, _ = UserInfo.objects.get_or_create(user=request.user)
+        serializer = UserInfoSerializer(profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request):
+        profile, _ = UserInfo.objects.get_or_create(user=request.user)
+        serializer = UserInfoSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
